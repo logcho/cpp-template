@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <iomanip>
 
 #include "3rdparty/cpp-httplib/httplib.h"
 #include "3rdparty/picojson/picojson.h"
@@ -19,13 +20,24 @@ void createNotice(httplib::Client &cli, const std::string &payload) {
 
 std::string handle_advance(httplib::Client &cli, picojson::value data)
 {
-    std::cout << "Received advance request data " << data << std::endl;
+    // std::cout << "Received advance request data " << data << std::endl;
+    std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
+    std::cout << "Message Sender: " << data.get("metadata").get("msg_sender") << std::endl;
+    std::cout << "Payload: " << data.get("payload") << std::endl;
+    std::cout << "Converted Payload: " << hexToString(data.get("payload").to_str()) << std::endl;
+    std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
+
     return "accept";
 }
 
 std::string handle_inspect(httplib::Client &cli, picojson::value data)
-{
-    std::cout << "Received inspect request data " << data << std::endl;
+{   
+    // std::cout << "Received inspect request data " << data << std::endl;
+    std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
+    std::cout << "Payload: " << data.get("payload") << std::endl;
+    std::cout << "Converted Payload: " << hexToString(data.get("payload").to_str()) << std::endl;
+    std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
+
     return "accept";
 }
 
