@@ -9,12 +9,16 @@
 void createReport(httplib::Client &cli, const std::string &payload) {
     auto report = std::string("{\"payload\":\"") + payload + std::string("\"}");
     auto r = cli.Post("/report", report, "application/json");    
+
+    // Expect status 202
     std::cout << "Received report status " << r.value().status << std::endl;
 }
 
 void createNotice(httplib::Client &cli, const std::string &payload) {
     auto notice = std::string("{\"payload\":\"") + payload + std::string("\"}");
     auto r = cli.Post("/notice", notice, "application/json");    
+
+    // Expect status 201
     std::cout << "Received notice status " << r.value().status << std::endl;
 }
 
@@ -26,6 +30,8 @@ std::string handle_advance(httplib::Client &cli, picojson::value data)
     std::cout << "Payload: " << data.get("payload") << std::endl;
     std::cout << "Converted Payload: " << hexToString(data.get("payload").to_str()) << std::endl;
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
+    
+    createNotice(cli, data.get("payload").to_str());
 
     return "accept";
 }
@@ -37,6 +43,8 @@ std::string handle_inspect(httplib::Client &cli, picojson::value data)
     std::cout << "Payload: " << data.get("payload") << std::endl;
     std::cout << "Converted Payload: " << hexToString(data.get("payload").to_str()) << std::endl;
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
+
+    createReport(cli, data.get("payload").to_str());
 
     return "accept";
 }
