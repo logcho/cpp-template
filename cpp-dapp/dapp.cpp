@@ -8,8 +8,7 @@
 
 void createReport(httplib::Client &cli, const std::string &payload) {
     auto report = std::string("{\"payload\":\"") + payload + std::string("\"}");
-    auto r = cli.Post("/report", report, "application/json");    
-
+    auto r = cli.Post("/report", report, "application/json");   
     // Expect status 202
     std::cout << "Received report status " << r.value().status << std::endl;
 }
@@ -17,9 +16,22 @@ void createReport(httplib::Client &cli, const std::string &payload) {
 void createNotice(httplib::Client &cli, const std::string &payload) {
     auto notice = std::string("{\"payload\":\"") + payload + std::string("\"}");
     auto r = cli.Post("/notice", notice, "application/json");    
-
     // Expect status 201
     std::cout << "Received notice status " << r.value().status << std::endl;
+}
+
+void depositErc20(httplib::Client &cli, std::string account, std::string erc20, std::string amount){
+    picojson::object content{
+        {"address", picojson::value(account)},
+        {"erc20", picojson::value(erc20)},
+        {"amount", picojson::value(amount)}
+    };
+    picojson::object noticePayload{
+        {"type", picojson::value("erc20deposit")},
+        {"content", picojson::value(content)}
+    };
+    std::string payload = picojson::value(noticePayload).serialize();
+    auto response = cli.Post("/voucher", payload, "application/json");    
 }
 
 std::string handle_advance(httplib::Client &cli, picojson::value data)
