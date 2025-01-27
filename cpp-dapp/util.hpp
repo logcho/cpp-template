@@ -7,6 +7,22 @@
 #include <iomanip>
 #include <stdexcept>
 
+
+std::string slice(const std::string& hexInput, size_t start, size_t end) {
+    if (hexInput.substr(0, 2) != "0x") {
+        throw std::invalid_argument("Invalid hex input: Missing 0x prefix");
+    }
+    return "0x" + hexInput.substr(start * 2 + 2, (end - start) * 2);
+}
+
+bool hexToBool(const std::string& hexInput) {
+    return hexInput == "0x01";
+}
+
+std::string boolToHex(bool value) {
+    return value ? "0x01" : "0x00";
+}
+
 std::string stringToHex(const std::string& input){
     std::ostringstream hexStream;
     hexStream << "0x";

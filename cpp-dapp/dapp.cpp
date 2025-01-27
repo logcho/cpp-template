@@ -6,6 +6,9 @@
 #include "3rdparty/picojson/picojson.h"
 #include "util.hpp"
 
+std::string const ERC20 = "0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2";
+std::string const APPLICATION_ADDRESS = "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e";
+
 void createReport(httplib::Client &cli, const std::string &payload) {
     auto report = std::string("{\"payload\":\"") + payload + std::string("\"}");
     auto r = cli.Post("/report", report, "application/json");   
@@ -20,40 +23,34 @@ void createNotice(httplib::Client &cli, const std::string &payload) {
     std::cout << "Received notice status " << r.value().status << std::endl;
 }
 
-void depositErc20(httplib::Client &cli, std::string account, std::string erc20, std::string amount){
-    picojson::object content{
-        {"address", picojson::value(account)},
-        {"erc20", picojson::value(erc20)},
-        {"amount", picojson::value(amount)}
-    };
-    picojson::object noticePayload{
-        {"type", picojson::value("erc20deposit")},
-        {"content", picojson::value(content)}
-    };
-    std::string payload = picojson::value(noticePayload).serialize();
-    auto response = cli.Post("/voucher", payload, "application/json");    
+picojson::object parseERC20DepositToJson(const std::string& payload) {    
+    picojson::object obj;
+    obj["success"] = picojson::value(hexToBool(slice(payload, 0, 1)));
+    obj["token"] = picojson::value(slice(payload, 1, 21));
+    obj["sender"] = picojson::value(slice(payload, 21, 41));
+    obj["amount"] = picojson::value(slice(payload, 41, 73));
+    return obj;
 }
 
 std::string handle_advance(httplib::Client &cli, picojson::value data)
 {
-    // std::cout << "Received advance request data " << data << std::endl;
+    std::string user = data.get("metadata").get("msg_sender").to_str();
+    std::string payload = data.get("payload").to_str();
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
-    std::cout << "Message Sender: " << data.get("metadata").get("msg_sender") << std::endl;
-    std::cout << "Payload: " << data.get("payload") << std::endl;
-    std::cout << "Converted Payload: " << hexToString(data.get("payload").to_str()) << std::endl;
+    std::cout << "User: " << user << std::endl;
+    std::cout << "Payload: " << payload << std::endl;
+    std::cout << "Converted Payload: " << hexToString(payload) << std::endl;
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
     
-    createNotice(cli, data.get("payload").to_str());
-
     return "accept";
 }
 
 std::string handle_inspect(httplib::Client &cli, picojson::value data)
 {   
-    // std::cout << "Received inspect request data " << data << std::endl;
+    std::string payload = data.get("payload").to_str();
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
-    std::cout << "Payload: " << data.get("payload") << std::endl;
-    std::cout << "Converted Payload: " << hexToString(data.get("payload").to_str()) << std::endl;
+    std::cout << "Payload: " << payload << std::endl;
+    std::cout << "Converted Payload: " << hexToString(payload) << std::endl;
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
 
     createReport(cli, data.get("payload").to_str());
