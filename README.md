@@ -10,5 +10,4 @@ This is a custom C++ template for Cartesi that builds upon the default template,
 
 ## Installation & Setup
 ### Prerequisites
-- [Install Docker Desktop and Cartesi CLI] (https://docs.cartesi.io/cartesi-rollups/1.5/quickstart/)
-
+- [Install Docker Desktop and Cartesi CLI](https://docs.cartesi.io/cartesi-rollups/1.5/quickstart/)
