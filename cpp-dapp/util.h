@@ -1,5 +1,5 @@
 #ifndef UTIL_H
-#define UTIL
+#define UTIL_H
 
 #include <string>
 #include <vector>
