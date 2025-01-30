@@ -14,5 +14,11 @@ picojson:
   rm v1.3.0.tar.gz && \
   mv picojson-1.3.0 picojson
 
+boost:
+  wget https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.gz
+  tar xzf boost_1_87_0.tar.gz && \
+  rm boost_1_87_0.tar.gzz && \
+  mv boost_1_87_0 boost
+
 clean:
-	rm -rf picojson cpp-httplib
+	rm -rf picojson cpp-httplib boost

@@ -49,7 +49,7 @@ std::string handle_advance(httplib::Client &cli, picojson::value data)
     std::cout << "Payload: " << payload << std::endl;
     // std::cout << "Converted Payload: " << hexToString(payload) << std::endl;
     std::cout << "Sender: " << deposit["sender"].to_str() << std::endl;
-    std::cout << "Value: " << hexToNumber(deposit["value"].to_str()) << std::endl;
+    std::cout << "Value: " << deposit["value"].to_str() << std::endl;
 
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
     
