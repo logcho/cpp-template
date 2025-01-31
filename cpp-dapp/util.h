@@ -7,7 +7,6 @@
 #include <iomanip>
 #include <stdexcept>
 
-
 std::string slice(const std::string& hexInput, size_t start, size_t end) {
     if (hexInput.substr(0, 2) != "0x") {
         throw std::invalid_argument("Invalid hex input: Missing 0x prefix");
