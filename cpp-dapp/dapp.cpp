@@ -39,6 +39,14 @@ picojson::object parseERC20DepositToJson(const std::string& payload) {
     return obj;
 }
 
+picojson::object parseERC721Deposit(const std::string& payload) {    
+    picojson::object obj;
+    obj["token"] = picojson::value(slice(payload, 0, 20));
+    obj["sender"] = picojson::value(slice(payload, 20, 40));
+    obj["tokenId"] = picojson::value(slice(payload, 40, 72));
+    return obj;
+}
+
 std::string handle_advance(httplib::Client &cli, picojson::value data)
 {
     std::string user = data.get("metadata").get("msg_sender").to_str();
