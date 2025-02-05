@@ -5,6 +5,7 @@
 #include "3rdparty/cpp-httplib/httplib.h"
 #include "3rdparty/picojson/picojson.h"
 #include "util.h"
+#include "uint256_t/uint256_t.h"
 
 std::string const ERC20 = "0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2";
 std::string const APPLICATION_ADDRESS = "0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e";
@@ -53,11 +54,12 @@ std::string handle_advance(httplib::Client &cli, picojson::value data)
     std::string payload = data.get("payload").to_str();
     picojson::object deposit = parseEtherDeposit(payload);
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
-    std::cout << "User: " << user << std::endl;
-    std::cout << "Payload: " << payload << std::endl;
-    // std::cout << "Converted Payload: " << hexToString(payload) << std::endl;
+    // std::cout << "User: " << user << std::endl;
+    // std::cout << "Payload: " << payload << std::endl;
+    // // std::cout << "Converted Payload: " << hexToString(payload) << std::endl;
+    uint256_t value(deposit["value"].to_str().substr(2), 16);
     std::cout << "Sender: " << deposit["sender"].to_str() << std::endl;
-    std::cout << "Value: " << deposit["value"].to_str() << std::endl;
+    std::cout << "Value: " << value << std::endl;    
 
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
     
