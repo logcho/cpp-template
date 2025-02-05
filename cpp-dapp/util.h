@@ -7,6 +7,21 @@
 #include <iomanip>
 #include <stdexcept>
 
+std::string const ETHER_PORTAL_ADDRESS = "0xffdbe43d4c855bf7e0f105c400a50857f53ab044";
+std::string const ERC20_PORTAL_ADDRESS = "0x9c21aeb2093c32ddbc53eef24b873bdcd1ada1db";
+std::string const ERC721_PORTAL_ADDRESS = "0x237f8dd094c0e47f4236f12b4fa01d6dae89fb87";
+
+bool isEtherDeposit(const std::string& address) {
+    return address == ETHER_PORTAL_ADDRESS;
+}
+
+bool isERC20Deposit(const std::string& address) {
+    return address == ERC20_PORTAL_ADDRESS;
+}
+bool isERC721Deposit(const std::string& address) {
+    return address == ERC721_PORTAL_ADDRESS;
+}
+
 std::string slice(const std::string& hexInput, size_t start, size_t end) {
     if (hexInput.substr(0, 2) != "0x") {
         throw std::invalid_argument("Invalid hex input: Missing 0x prefix");
