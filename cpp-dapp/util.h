@@ -18,6 +18,7 @@ bool isEtherDeposit(const std::string& address) {
 bool isERC20Deposit(const std::string& address) {
     return address == ERC20_PORTAL_ADDRESS;
 }
+
 bool isERC721Deposit(const std::string& address) {
     return address == ERC721_PORTAL_ADDRESS;
 }

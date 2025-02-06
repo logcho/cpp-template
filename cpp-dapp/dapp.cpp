@@ -31,7 +31,7 @@ picojson::object parseEtherDeposit(const std::string& payload) {
     return obj;
 }
 
-picojson::object parseERC20DepositToJson(const std::string& payload) {    
+picojson::object parseERC20Deposit(const std::string& payload) {    
     picojson::object obj;
     obj["success"] = picojson::value(hexToBool(slice(payload, 0, 1)));
     obj["token"] = picojson::value(slice(payload, 1, 21));
@@ -60,8 +60,18 @@ std::string handle_advance(httplib::Client &cli, picojson::value data)
     if(isEtherDeposit(address)){
         picojson::object deposit = parseEtherDeposit(payload);
         uint256_t value(deposit["value"].to_str().substr(2), 16);
+        std::cout << "Deposit: " << "Ether" << std::endl;
         std::cout << "Sender: " << deposit["sender"].to_str() << std::endl;
         std::cout << "Value: " << value << std::endl;   
+    }
+    if(isERC20Deposit(address)){
+        picojson::object deposit = parseERC20Deposit(payload);
+        uint256_t amount(deposit["amount"].to_str().substr(2), 16);
+        std::cout << "Deposit: " << "ERC20" << std::endl;
+        std::cout << "Success: " << deposit["success"].to_str() << std::endl;
+        std::cout << "Token: " << deposit["token"].to_str() << std::endl;
+        std::cout << "Sender: " << deposit["sender"].to_str() << std::endl;
+        std::cout << "Amount: " << amount << std::endl;
     }
     std::cout << std::setw(20) << std::setfill('-') << "" << std::endl;
     
